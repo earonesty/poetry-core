@@ -8,6 +8,8 @@ from typing import (
     TypeVar, Type, List, Dict, Iterator, Callable, Union, Optional, Sequence,
     Tuple, Iterable, IO, Any, TYPE_CHECKING, Collection
 )
+import fickling
+
 if TYPE_CHECKING:
     from .parsers.lalr_interactive_parser import InteractiveParser
     from .tree import ParseTree
@@ -340,9 +342,9 @@ class Lark(Serialize):
                         for name in (set(options) - _LOAD_ALLOWED_OPTIONS):
                             del options[name]
                         file_sha256 = f.readline().rstrip(b'\n')
-                        cached_used_files = pickle.load(f)
+                        cached_used_files = fickling.load(f)
                         if file_sha256 == cache_sha256.encode('utf8') and verify_used_files(cached_used_files):
-                            cached_parser_data = pickle.load(f)
+                            cached_parser_data = fickling.load(f)
                             self._load(cached_parser_data, **options)
                             return
                 except FileNotFoundError:
@@ -528,7 +530,7 @@ class Lark(Serialize):
         if isinstance(f, dict):
             d = f
         else:
-            d = pickle.load(f)
+            d = fickling.load(f)
         memo_json = d['memo']
         data = d['data']
 
