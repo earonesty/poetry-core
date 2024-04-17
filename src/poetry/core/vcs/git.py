@@ -162,7 +162,7 @@ def executable() -> str:
         # Finding git via where.exe
         where = "%WINDIR%\\System32\\where.exe"
         paths = subprocess.check_output(
-            [where, "git"], shell=True, encoding="oem"
+            [where, "git"], shell=False, encoding="oem"
         ).split("\n")
         for path in paths:
             if not path:
