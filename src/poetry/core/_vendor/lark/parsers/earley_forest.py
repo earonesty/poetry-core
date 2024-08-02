@@ -8,7 +8,6 @@ https://web.archive.org/web/20190616123959/http://www.bramvandersanden.com/post/
 """
 
 from typing import Type, AbstractSet
-from random import randint
 from collections import deque
 from operator import attrgetter
 from importlib import import_module
@@ -18,6 +17,7 @@ from ..parse_tree_builder import AmbiguousIntermediateExpander
 from ..visitors import Discard
 from ..utils import logger, OrderedSet
 from ..tree import Tree
+import secrets
 
 class ForestNode:
     pass
@@ -781,7 +781,7 @@ class ForestToPyDotVisitor(ForestVisitor):
                 self.graph.add_edge(self.pydot.Edge(graph_node, child_graph_node))
             else:
                 #### Try and be above the Python object ID range; probably impl. specific, but maybe this is okay.
-                child_graph_node_id = str(randint(100000000000000000000000000000,123456789012345678901234567890))
+                child_graph_node_id = str(secrets.SystemRandom().randint(100000000000000000000000000000,123456789012345678901234567890))
                 child_graph_node_style = "invis"
                 child_graph_node = self.pydot.Node(child_graph_node_id, style=child_graph_node_style, label="None")
                 child_edge_style = "invis"
