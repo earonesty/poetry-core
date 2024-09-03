@@ -5,6 +5,7 @@ import subprocess
 from typing import TYPE_CHECKING
 
 from poetry.core.vcs.git import Git
+from security import safe_command
 
 
 if TYPE_CHECKING:
@@ -18,8 +19,7 @@ def get_vcs(directory: Path) -> Git | None:
     try:
         from poetry.core.vcs.git import executable
 
-        check_ignore = subprocess.run(
-            [executable(), "check-ignore", "."],
+        check_ignore = safe_command.run(subprocess.run, [executable(), "check-ignore", "."],
             stderr=subprocess.DEVNULL,
             stdout=subprocess.DEVNULL,
             cwd=directory,
